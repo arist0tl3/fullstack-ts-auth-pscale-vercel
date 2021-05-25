@@ -26,7 +26,7 @@ const init = async () => {
     context: { db: connection },
     playground: true,
     typeDefs,
-    resolvers,
+    resolvers: resolvers as any,
   });
 
   await server.start();
