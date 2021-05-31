@@ -8,7 +8,7 @@
     "codegen": "graphql-codegen --config codegen.yml",
     "deploy-vercel": "npm run build && vercel",
     "serve": "pscale connect my-app main --execute 'NODE_ENV=production node dist/index.js'",
-    "start": "pscale connect my-app feature --execute 'nodemon --exec babel-node --extensions .ts,.js ./src/index.ts'",
+    "start": "pscale connect my-app feature --debug --execute 'nodemon --exec babel-node --extensions .ts,.js ./src/index.ts'",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
