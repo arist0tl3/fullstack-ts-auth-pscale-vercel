@@ -22,15 +22,34 @@ Create the users table:
 
 ```
 CREATE TABLE `users` (
-  `id` binary(16) PRIMARY KEY,
-  `email` varchar(255) NOT NULL,
-  `password` varchar(60) NOT NULL
+  `id` VARCHAR(36) PRIMARY KEY,
+  `email` VARCHAR(255) NOT NULL,
+  `password` VARCHAR(60) NOT NULL,
+  `token`
 );
 ```
 
-Confirm the table creation:
+Create the user tokens table:
 
-`SHOW TABLES;`
+```
+CREATE TABLE `user_tokens` (
+  `id` VARCHAR(36) PRIMARY KEY,
+  `userId` VARCHAR(36) NOT NULL,
+  `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  `revoked` BOOLEAN DEFAULT FALSE,
+  `revoked_at` TIMESTAMP,
+  `revoked_reason` VARCHAR(255)
+);
+```
 
+Create the items table:
+
+```
+CREATE TABLE `items` (
+  `id` VARCHAR(36) PRIMARY KEY,
+  `name` VARCHAR(255) NOT NULL,
+  `userId` VARCHAR(36) NOT NULL
+);
+```
 
 
