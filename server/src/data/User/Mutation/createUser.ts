@@ -1,10 +1,10 @@
 import { MutationCreateUserArgs, User } from 'generated/graphql';
-import { DB } from 'types/db';
+import { Context } from 'types/context';
 import { v4 as uuidv4 } from 'uuid';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 
-const createUser = async (root: object, args: MutationCreateUserArgs, db: DB): Promise<User | null> => {
+const createUser = async (root: object, args: MutationCreateUserArgs, ctx: Context): Promise<User | null> => {
   // Retrieve input
   const { email, password } = args.input;
 
@@ -15,7 +15,7 @@ const createUser = async (root: object, args: MutationCreateUserArgs, db: DB): P
   const token = jwt.sign(tokenId, 'mySecret');
   const hashedPassword = await bcrypt.hash(password, 10);
 
-  await db.execute(
+  await ctx.db.execute(
     `
   INSERT INTO
     users (id, email, password)
@@ -25,17 +25,17 @@ const createUser = async (root: object, args: MutationCreateUserArgs, db: DB): P
     [userId, email, hashedPassword],
   );
 
-  await db.execute(
+  await ctx.db.execute(
     `
     INSERT INTO
-      user_tokens (id, createdAt, token, tokenId, userId)
+      user_tokens (id, userId)
     VALUES
-      (?, ?, ?, ?, ?)
+      (?, ?)
     `,
-    [uuidv4(), new Date(), token, tokenId, userId],
+    [tokenId, userId],
   );
 
-  const [user] = await db.execute<User[]>(
+  const [users] = await ctx.db.execute<User[]>(
     `
   SELECT
     id, email
@@ -47,11 +47,13 @@ const createUser = async (root: object, args: MutationCreateUserArgs, db: DB): P
     [userId],
   );
 
-  if (user) {
-    return {
-      ...user,
+  if (users) {
+    const user = {
+      ...users[0],
       token,
     };
+
+    return user;
   }
 
   return null;

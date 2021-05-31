@@ -3,7 +3,7 @@ import 'dotenv/config';
 import cors from 'cors';
 import express, { Request, Response, NextFunction } from 'express';
 import compression from 'compression';
-import mysql from 'mysql2/promise';
+import mysql, { Connection } from 'mysql2/promise';
 import { ApolloServer } from 'apollo-server-express';
 
 import schema from 'data/schema';
@@ -17,13 +17,19 @@ const { DATABASE_URL } = process.env;
 // Create express app
 const app = express();
 
+// Placeholder for our db connection
+let connection: Connection;
+
 const init = async () => {
   try {
     // Ensure we have a url to connect to
     if (!DATABASE_URL) throw new Error('Missing DATABASE_URL');
 
     // Establish the connection
-    const connection = await mysql.createConnection(DATABASE_URL);
+    connection = await mysql.createConnection({
+      connectTimeout: 30000,
+      uri: DATABASE_URL,
+    });
     await connection.connect();
 
     // Create a specific exec that allows for typing
@@ -43,12 +49,12 @@ const init = async () => {
           };
         }
 
-        const user = await getUser(token, db);
+        const currentUser = await getUser(token, db);
 
         return {
           ...req,
           db,
-          user,
+          currentUser,
         };
       },
       playground: true,
@@ -89,6 +95,20 @@ const init = async () => {
     console.log('Error initializing server: ', err.toString());
   }
 };
+
+function shutDown() {
+  console.log('Received kill signal, shutting down gracefully');
+
+  if (connection) connection.destroy();
+
+  setTimeout(() => {
+    console.error('Could not close connections in time, forcefully shutting down');
+    process.exit(1);
+  }, 10000);
+}
+
+process.on('SIGTERM', shutDown);
+process.on('SIGINT', shutDown);
 
 init();
 

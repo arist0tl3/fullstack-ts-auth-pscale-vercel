@@ -1,9 +1,9 @@
 import { User } from 'generated/graphql';
 import jwt from 'jsonwebtoken';
 
-import { db as Idb } from 'types/db';
+import { DB } from 'types/db';
 
-export default async function getUser(token: string, db: Idb): Promise<User | null> {
+export default async function getUser(token: string, db: DB): Promise<User | null> {
   if (!token) {
     return null;
   }
@@ -28,25 +28,28 @@ export default async function getUser(token: string, db: Idb): Promise<User | nu
     return null;
   }
 
-  const { tokenId } = result;
+  const tokenId = result;
 
-  const [rows] = await db.execute(
+  const [rows] = await db.execute<User[]>(
     `
   SELECT
-    userToken.id, userToken.userId, user.id, user.token
+    user_token.id, user_token.userId, user.id, user.email
   FROM
     user_tokens user_token
   INNER JOIN  
     users user
   ON
-    user.id = userToken.userId
+    user.id = user_token.userId
   WHERE
-    userToken.id = ? AND userToken.revoked != TRUE
+    user_token.id = ?
   `,
     [tokenId],
   );
 
-  console.log('r', rows);
+  const user = {
+    id: rows[0].id,
+    email: rows[0].email,
+  };
 
-  return rows;
+  return user;
 }
