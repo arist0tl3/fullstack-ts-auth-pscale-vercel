@@ -1,7 +1,7 @@
 import { User } from 'generated/graphql';
-import { Context } from 'types/context';
+import { DB } from 'types/db';
 
-const users = async (root: object, args: any, ctx: Context): Promise<User[]> => {
+const users = async (root: object, args: any, db: DB): Promise<User[]> => {
   const query = `
   SELECT
     BIN_TO_UUID(id) id, email, password
@@ -9,9 +9,9 @@ const users = async (root: object, args: any, ctx: Context): Promise<User[]> => 
     users
   `;
 
-  const [rows] = await ctx.db.execute(query);
+  const [rows] = await db.execute<User[]>(query);
 
-  return rows as User[];
+  return rows;
 };
 
 export default users;
