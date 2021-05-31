@@ -1,20 +1,20 @@
-import { MutationResolvers, QueryResolvers } from '../generated/graphql';
+import { resolvers as graphqlScalarsResolvers } from 'graphql-scalars';
 
-import users from './User/Query/users';
+import UserResolvers from './User/resolvers';
 
-interface Resolvers {
-  Query: QueryResolvers;
-  Mutation: MutationResolvers;
-}
-
-const resolvers: Resolvers = {
+const rootResolver = {
   Query: {
     root: () => 'query',
-    users,
   },
   Mutation: {
     root: () => 'mutation',
   },
+};
+
+const resolvers = {
+  ...graphqlScalarsResolvers,
+  ...rootResolver,
+  ...UserResolvers,
 };
 
 export default resolvers;

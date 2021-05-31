@@ -6,8 +6,11 @@ import compression from 'compression';
 import mysql from 'mysql2/promise';
 import { ApolloServer } from 'apollo-server-express';
 
-import resolvers from './data/resolvers';
-import typeDefs from './data/typeDefs';
+import schema from 'data/schema';
+import { DbQuery } from 'types/db';
+
+import getUser from './utils/getUser';
+import stripBearerFromAuthHeader from './utils/stripBearerFromAuthHeader';
 
 const { DATABASE_URL } = process.env;
 
@@ -15,50 +18,76 @@ const { DATABASE_URL } = process.env;
 const app = express();
 
 const init = async () => {
-  // Ensure we have a url to connect to
-  if (!DATABASE_URL) throw new Error('Missing DATABASE_URL');
+  try {
+    // Ensure we have a url to connect to
+    if (!DATABASE_URL) throw new Error('Missing DATABASE_URL');
 
-  // Establish the connection
-  const connection = await mysql.createConnection(DATABASE_URL);
-  await connection.connect();
+    // Establish the connection
+    const connection = await mysql.createConnection(DATABASE_URL);
+    await connection.connect();
 
-  const server = new ApolloServer({
-    context: { db: connection },
-    playground: true,
-    typeDefs,
-    resolvers: resolvers as any,
-  });
+    // Create a specific exec that allows for typing
+    const db = {
+      execute: async <T>(query: string, params?: Array<any>): Promise<[T, any]> => connection.execute<DbQuery<T>>(query, params),
+    };
 
-  await server.start();
+    const server = new ApolloServer({
+      context: async ({ req }) => {
+        const authHeader = req?.headers?.authorization || '';
+        const token = stripBearerFromAuthHeader(authHeader);
 
-  // Use process.env as default
-  const PORT = process.env.PORT || 3000;
+        if (!token) {
+          return {
+            ...req,
+            db,
+          };
+        }
 
-  // Whitelist all routes with cors
-  app.use(cors());
+        const user = await getUser(token, db);
 
-  // Use express json
-  app.use(express.json());
-  app.use(express.urlencoded({ extended: true }));
+        return {
+          ...req,
+          db,
+          user,
+        };
+      },
+      playground: true,
+      schema,
+    });
 
-  // Make sure no responses are getting cached
-  app.use((req: Request, res: Response, next: NextFunction) => {
-    res.header('Cache-Control', 'private, no-cache, no-store, must-revalidate');
-    res.header('Expires', '-1');
-    res.header('Pragma', 'no-cache');
-    next();
-  });
+    await server.start();
 
-  // Enable gzip compression
-  app.use(compression());
+    // Use process.env as default
+    const PORT = process.env.PORT || 3000;
 
-  server.applyMiddleware({ app });
+    // Whitelist all routes with cors
+    app.use(cors());
 
-  // Start server
-  app.listen(PORT, () => {
-    // eslint-disable-next-line no-console
-    console.log(`Server is listening on port ${PORT}`);
-  });
+    // Use express json
+    app.use(express.json());
+    app.use(express.urlencoded({ extended: true }));
+
+    // Make sure no responses are getting cached
+    app.use((req: Request, res: Response, next: NextFunction) => {
+      res.header('Cache-Control', 'private, no-cache, no-store, must-revalidate');
+      res.header('Expires', '-1');
+      res.header('Pragma', 'no-cache');
+      next();
+    });
+
+    // Enable gzip compression
+    app.use(compression());
+
+    server.applyMiddleware({ app });
+
+    // Start server
+    app.listen(PORT, () => {
+      // eslint-disable-next-line no-console
+      console.log(`Server is listening on port ${PORT}`);
+    });
+  } catch (err) {
+    console.log('Error initializing server: ', err.toString());
+  }
 };
 
 init();
