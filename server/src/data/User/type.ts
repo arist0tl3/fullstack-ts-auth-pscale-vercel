@@ -2,7 +2,7 @@ import { gql } from 'apollo-server-express';
 
 const user = gql`
   type User {
-    id: String!
+    id: String
     email: String
     token: String
   }
@@ -17,7 +17,7 @@ const user = gql`
   }
 
   extend type Query {
-    users: [User]!
+    users: [User]
   }
 `;
 
