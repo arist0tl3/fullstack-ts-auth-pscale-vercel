@@ -21,6 +21,4 @@ const resolvers = merge.all([
   UserResolvers,
 ]) as IResolvers;
 
-console.log('r', resolvers);
-
 export default resolvers;

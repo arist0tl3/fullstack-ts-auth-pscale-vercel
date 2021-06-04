@@ -14,8 +14,6 @@ const createItem = async (root: object, args: MutationCreateItemArgs, ctx: Conte
   // Generate itemId
   const itemId = uuidv4();
 
-  console.log(itemId, description, name, currentUser.id);
-
   await ctx.db.execute(
     `
   INSERT INTO
