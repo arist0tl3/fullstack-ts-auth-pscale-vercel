@@ -99,16 +99,22 @@ const init = async () => {
 function shutDown() {
   console.log('Received kill signal, shutting down gracefully');
 
-  if (connection) connection.destroy();
+  if (connection) {
+    connection.destroy();
+    process.kill(process.pid, 'SIGUSR2');
+    process.exit(0);
+  }
 
   setTimeout(() => {
     console.error('Could not close connections in time, forcefully shutting down');
+    process.kill(process.pid, 'SIGUSR2');
     process.exit(1);
   }, 10000);
 }
 
 process.on('SIGTERM', shutDown);
 process.on('SIGINT', shutDown);
+process.once('SIGUSR2', shutDown);
 
 init();
 
