@@ -5,7 +5,7 @@ const item = gql`
     id: String
     description: String
     name: String
-    userId: String
+    user_id: String
   }
 
   input CreateItemInput {

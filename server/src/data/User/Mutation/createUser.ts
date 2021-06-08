@@ -15,48 +15,15 @@ const createUser = async (root: object, args: MutationCreateUserArgs, ctx: Conte
   const token = jwt.sign(tokenId, 'mySecret');
   const hashedPassword = await bcrypt.hash(password, 10);
 
-  await ctx.db.execute(
-    `
-  INSERT INTO
-    users (id, email, password)
-  VALUES
-    (?, ?, ?)
-  `,
-    [userId, email, hashedPassword],
-  );
+  await ctx.kdb('users').insert({ id: userId, email, password: hashedPassword });
+  await ctx.kdb('user_tokens').insert({ id: tokenId, user_id: userId });
 
-  await ctx.db.execute(
-    `
-    INSERT INTO
-      user_tokens (id, userId)
-    VALUES
-      (?, ?)
-    `,
-    [tokenId, userId],
-  );
+  const user = await ctx.kdb('users').select('id', 'email').where({ id: userId }).first();
 
-  const [users] = await ctx.db.execute<User[]>(
-    `
-  SELECT
-    id, email
-  FROM
-    users
-  WHERE
-    id = ?
-  `,
-    [userId],
-  );
-
-  if (users) {
-    const user = {
-      ...users[0],
-      token,
-    };
-
-    return user;
-  }
-
-  return null;
+  return {
+    ...user,
+    token,
+  };
 };
 
 export default createUser;

@@ -5,6 +5,7 @@ import express, { Request, Response, NextFunction } from 'express';
 import compression from 'compression';
 import mysql, { Connection } from 'mysql2/promise';
 import { ApolloServer } from 'apollo-server-express';
+import knex from 'knex';
 
 import schema from 'data/schema';
 import { DbQuery } from 'types/db';
@@ -21,16 +22,24 @@ const app = express();
 let connection: Connection;
 
 const init = async () => {
+  console.log('init');
   try {
     // Ensure we have a url to connect to
     if (!DATABASE_URL) throw new Error('Missing DATABASE_URL');
 
-    // Establish the connection
-    connection = await mysql.createConnection({
-      connectTimeout: 30000,
-      uri: DATABASE_URL,
+    const kdb = knex({
+      client: 'mysql2',
+      connection: DATABASE_URL,
     });
-    await connection.connect();
+
+    // Establish the connection
+    if (!connection) {
+      connection = await mysql.createConnection({
+        connectTimeout: 30000,
+        uri: DATABASE_URL,
+      });
+      await connection.connect();
+    }
 
     // Create a specific exec that allows for typing
     const db = {
@@ -46,14 +55,16 @@ const init = async () => {
           return {
             ...req,
             db,
+            kdb,
           };
         }
 
-        const currentUser = await getUser(token, db);
+        const currentUser = await getUser(token, kdb);
 
         return {
           ...req,
           db,
+          kdb,
           currentUser,
         };
       },

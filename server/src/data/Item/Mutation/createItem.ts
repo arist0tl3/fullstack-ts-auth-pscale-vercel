@@ -3,9 +3,9 @@ import { Context } from 'types/context';
 import { v4 as uuidv4 } from 'uuid';
 
 const createItem = async (root: object, args: MutationCreateItemArgs, ctx: Context): Promise<Item | null> => {
-  // Check for current user
-  const { currentUser } = ctx;
+  const { currentUser, kdb } = ctx;
 
+  // Check for current user
   if (!currentUser || !currentUser.id) throw new Error('Missing user data');
 
   // Retrieve input
@@ -14,31 +14,9 @@ const createItem = async (root: object, args: MutationCreateItemArgs, ctx: Conte
   // Generate itemId
   const itemId = uuidv4();
 
-  await ctx.db.execute(
-    `
-  INSERT INTO
-    items (id, description, name, userId)
-  VALUES
-    (?, ?, ?, ?)
-  `,
-    [itemId, description, name, currentUser.id],
-  );
+  await kdb('items').insert({ id: itemId, description, name, user_id: currentUser.id });
 
-  const [items] = await ctx.db.execute<Item[]>(
-    `
-  SELECT
-    id, description, name, userId
-  FROM
-    items
-  WHERE
-    id = ?
-  `,
-    [itemId],
-  );
-
-  if (items) return items[0];
-
-  return null;
+  return kdb('items').select('id', 'description', 'name').where({ id: itemId }).first();
 };
 
 export default createItem;

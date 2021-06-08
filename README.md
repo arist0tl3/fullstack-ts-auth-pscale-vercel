@@ -34,7 +34,7 @@ Create the user tokens table:
 ```
 CREATE TABLE `user_tokens` (
   `id` VARCHAR(36) PRIMARY KEY,
-  `userId` VARCHAR(36) NOT NULL,
+  `user_id` VARCHAR(36) NOT NULL,
   `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   `revoked` BOOLEAN DEFAULT FALSE,
   `revoked_at` TIMESTAMP,
@@ -47,9 +47,19 @@ Create the items table:
 ```
 CREATE TABLE `items` (
   `id` VARCHAR(36) PRIMARY KEY,
+  `description` VARCHAR(255) NOT NULL,
   `name` VARCHAR(255) NOT NULL,
-  `userId` VARCHAR(36) NOT NULL
+  `user_id` VARCHAR(36) NOT NULL
 );
 ```
 
+## Adding data
+
+You can use the `npm run codegen` command to automatically generate types for your graphql types and resolvers. A common workflow would be:
+
+1. Create a new folder in the `data` folder, and add a type.ts file.
+2. Populate the type.ts file
+3. Add the type to the `data/typeDefs.ts` file
+4. After the server has restarted, run `npm run codegen` in a separate terminal
+5. Import types from `generated/graphql`
 

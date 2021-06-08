@@ -1,11 +1,10 @@
 import { User } from 'generated/graphql';
 import jwt from 'jsonwebtoken';
+import { Knex } from 'knex';
 
-import { DB } from 'types/db';
-
-export default async function getUser(token: string, db: DB): Promise<User | null> {
+export default async function getUser(token: string, kdb: Knex): Promise<User | undefined> {
   if (!token) {
-    return null;
+    return undefined;
   }
 
   const { ok, result } = await new Promise((resolve) => {
@@ -25,31 +24,16 @@ export default async function getUser(token: string, db: DB): Promise<User | nul
   });
 
   if (!ok) {
-    return null;
+    return undefined;
   }
 
   const tokenId = result;
 
-  const [rows] = await db.execute<User[]>(
-    `
-  SELECT
-    user_token.id, user_token.userId, user.id, user.email
-  FROM
-    user_tokens user_token
-  INNER JOIN  
-    users user
-  ON
-    user.id = user_token.userId
-  WHERE
-    user_token.id = ?
-  `,
-    [tokenId],
-  );
-
-  const user = {
-    id: rows[0].id,
-    email: rows[0].email,
-  };
+  const user = await kdb('user_tokens')
+    .select('user_tokens.id', 'users.email', 'users.id')
+    .where({ 'user_tokens.id': tokenId, revoked: false })
+    .join('users', 'user_tokens.user_id', '=', 'users.id')
+    .first();
 
   return user;
 }
