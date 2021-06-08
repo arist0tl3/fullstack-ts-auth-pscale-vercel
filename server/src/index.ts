@@ -5,7 +5,7 @@ import express, { Request, Response, NextFunction } from 'express';
 import compression from 'compression';
 import mysql, { Connection } from 'mysql2/promise';
 import { ApolloServer } from 'apollo-server-express';
-import knex from 'knex';
+import k from 'knex';
 
 import schema from 'data/schema';
 import { DbQuery } from 'types/db';
@@ -27,7 +27,7 @@ const init = async () => {
     // Ensure we have a url to connect to
     if (!DATABASE_URL) throw new Error('Missing DATABASE_URL');
 
-    const kdb = knex({
+    const knex = k({
       client: 'mysql2',
       connection: DATABASE_URL,
     });
@@ -41,11 +41,6 @@ const init = async () => {
       await connection.connect();
     }
 
-    // Create a specific exec that allows for typing
-    const db = {
-      execute: async <T>(query: string, params?: Array<any>): Promise<[T, any]> => connection.execute<DbQuery<T>>(query, params),
-    };
-
     const server = new ApolloServer({
       context: async ({ req }) => {
         const authHeader = req?.headers?.authorization || '';
@@ -54,17 +49,15 @@ const init = async () => {
         if (!token) {
           return {
             ...req,
-            db,
-            kdb,
+            knex,
           };
         }
 
-        const currentUser = await getUser(token, kdb);
+        const currentUser = await getUser(token, knex);
 
         return {
           ...req,
-          db,
-          kdb,
+          knex,
           currentUser,
         };
       },

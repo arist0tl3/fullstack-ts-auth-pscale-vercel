@@ -5,5 +5,5 @@ import { Knex } from 'knex';
 export interface Context {
   db: DB
   currentUser?: User
-  kdb: Knex
+  knex: Knex
 }

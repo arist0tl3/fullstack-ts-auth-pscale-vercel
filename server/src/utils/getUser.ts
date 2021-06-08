@@ -2,7 +2,7 @@ import { User } from 'generated/graphql';
 import jwt from 'jsonwebtoken';
 import { Knex } from 'knex';
 
-export default async function getUser(token: string, kdb: Knex): Promise<User | undefined> {
+export default async function getUser(token: string, knex: Knex): Promise<User | undefined> {
   if (!token) {
     return undefined;
   }
@@ -29,7 +29,7 @@ export default async function getUser(token: string, kdb: Knex): Promise<User | 
 
   const tokenId = result;
 
-  const user = await kdb('user_tokens')
+  const user = await knex('user_tokens')
     .select('user_tokens.id', 'users.email', 'users.id')
     .where({ 'user_tokens.id': tokenId, revoked: false })
     .join('users', 'user_tokens.user_id', '=', 'users.id')
