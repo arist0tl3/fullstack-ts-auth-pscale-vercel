@@ -8,7 +8,6 @@ import { ApolloServer } from 'apollo-server-express';
 import k from 'knex';
 
 import schema from 'data/schema';
-import { DbQuery } from 'types/db';
 
 import getUser from './utils/getUser';
 import stripBearerFromAuthHeader from './utils/stripBearerFromAuthHeader';
@@ -22,7 +21,6 @@ const app = express();
 let connection: Connection;
 
 const init = async () => {
-  console.log('init');
   try {
     // Ensure we have a url to connect to
     if (!DATABASE_URL) throw new Error('Missing DATABASE_URL');
