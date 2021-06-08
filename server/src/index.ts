@@ -30,6 +30,10 @@ const init = async () => {
       connection: DATABASE_URL,
     });
 
+    knex.on('query', (query) => {
+      if (!query.sql.includes('select `user_tokens`')) console.log(`Executed a query: ${query.sql}`);
+    });
+
     // Establish the connection
     if (!connection) {
       connection = await mysql.createConnection({
@@ -61,6 +65,8 @@ const init = async () => {
       },
       playground: true,
       schema,
+      subscriptions: false,
+      introspection: false,
     });
 
     await server.start();

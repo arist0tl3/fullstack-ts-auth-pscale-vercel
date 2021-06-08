@@ -271,7 +271,7 @@ export type UserToken = {
   revokedAt?: Maybe<Scalars['Date']>;
   revokedReason?: Maybe<Scalars['String']>;
   token?: Maybe<Scalars['String']>;
-  userId?: Maybe<Scalars['String']>;
+  user_id?: Maybe<Scalars['String']>;
 };
 
 
@@ -726,7 +726,7 @@ export type UserTokenResolvers<ContextType = any, ParentType extends ResolversPa
   revokedAt?: Resolver<Maybe<ResolversTypes['Date']>, ParentType, ContextType>;
   revokedReason?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   token?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  userId?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  user_id?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 

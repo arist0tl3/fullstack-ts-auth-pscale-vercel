@@ -6,6 +6,7 @@ const item = gql`
     description: String
     name: String
     user_id: String
+    user: User
   }
 
   input CreateItemInput {

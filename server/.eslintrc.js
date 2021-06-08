@@ -11,6 +11,7 @@ module.exports = {
   },
   plugins: ['@typescript-eslint', 'import'],
   rules: {
+    'arrow-body-style': 0,
     'import/extensions': 0,
     'import/no-extraneous-dependencies': 0,
     'import/no-unresolved': 2,

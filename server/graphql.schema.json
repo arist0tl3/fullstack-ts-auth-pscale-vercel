@@ -991,7 +991,7 @@
             "deprecationReason": null
           },
           {
-            "name": "userId",
+            "name": "user_id",
             "description": null,
             "args": [],
             "type": {
