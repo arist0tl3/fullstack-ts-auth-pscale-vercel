@@ -15,10 +15,6 @@ const user = gql`
   extend type Mutation {
     createUser(input: CreateUserInput!): User
   }
-
-  extend type Query {
-    users: [User]
-  }
 `;
 
 export default user;

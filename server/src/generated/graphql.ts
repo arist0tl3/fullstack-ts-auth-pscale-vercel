@@ -169,6 +169,14 @@ export type CreateUserInput = {
 };
 
 
+export type CurrentUser = {
+  __typename?: 'CurrentUser';
+  id?: Maybe<Scalars['String']>;
+  email?: Maybe<Scalars['String']>;
+  token?: Maybe<Scalars['String']>;
+  items?: Maybe<Array<Maybe<Item>>>;
+};
+
 
 
 
@@ -188,7 +196,7 @@ export type Item = {
   id?: Maybe<Scalars['String']>;
   description?: Maybe<Scalars['String']>;
   name?: Maybe<Scalars['String']>;
-  userId?: Maybe<Scalars['String']>;
+  user_id?: Maybe<Scalars['String']>;
 };
 
 
@@ -234,8 +242,8 @@ export type MutationCreateUserArgs = {
 export type Query = {
   __typename?: 'Query';
   root?: Maybe<Scalars['String']>;
+  currentUser?: Maybe<CurrentUser>;
   items: Array<Maybe<Item>>;
-  users?: Maybe<Array<Maybe<User>>>;
 };
 
 
@@ -352,6 +360,7 @@ export type ResolversTypes = {
   String: ResolverTypeWrapper<Scalars['String']>;
   CreateUserInput: CreateUserInput;
   Currency: ResolverTypeWrapper<Scalars['Currency']>;
+  CurrentUser: ResolverTypeWrapper<CurrentUser>;
   Date: ResolverTypeWrapper<Scalars['Date']>;
   DateTime: ResolverTypeWrapper<Scalars['DateTime']>;
   Duration: ResolverTypeWrapper<Scalars['Duration']>;
@@ -417,6 +426,7 @@ export type ResolversParentTypes = {
   String: Scalars['String'];
   CreateUserInput: CreateUserInput;
   Currency: Scalars['Currency'];
+  CurrentUser: CurrentUser;
   Date: Scalars['Date'];
   DateTime: Scalars['DateTime'];
   Duration: Scalars['Duration'];
@@ -486,6 +496,14 @@ export interface CurrencyScalarConfig extends GraphQLScalarTypeConfig<ResolversT
   name: 'Currency';
 }
 
+export type CurrentUserResolvers<ContextType = any, ParentType extends ResolversParentTypes['CurrentUser'] = ResolversParentTypes['CurrentUser']> = {
+  id?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  email?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  token?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  items?: Resolver<Maybe<Array<Maybe<ResolversTypes['Item']>>>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
 export interface DateScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['Date'], any> {
   name: 'Date';
 }
@@ -546,7 +564,7 @@ export type ItemResolvers<ContextType = any, ParentType extends ResolversParentT
   id?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   description?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   name?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  userId?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  user_id?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
@@ -650,8 +668,8 @@ export interface PostalCodeScalarConfig extends GraphQLScalarTypeConfig<Resolver
 
 export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
   root?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  currentUser?: Resolver<Maybe<ResolversTypes['CurrentUser']>, ParentType, ContextType>;
   items?: Resolver<Array<Maybe<ResolversTypes['Item']>>, ParentType, ContextType>;
-  users?: Resolver<Maybe<Array<Maybe<ResolversTypes['User']>>>, ParentType, ContextType>;
 };
 
 export interface RgbScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['RGB'], any> {
@@ -724,6 +742,7 @@ export type Resolvers<ContextType = any> = {
   BigInt?: GraphQLScalarType;
   Byte?: GraphQLScalarType;
   Currency?: GraphQLScalarType;
+  CurrentUser?: CurrentUserResolvers<ContextType>;
   Date?: GraphQLScalarType;
   DateTime?: GraphQLScalarType;
   Duration?: GraphQLScalarType;
