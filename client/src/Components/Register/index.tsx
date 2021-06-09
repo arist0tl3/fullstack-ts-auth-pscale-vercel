@@ -1,6 +1,9 @@
 import { gql, useMutation } from '@apollo/client';
-import { useState, FormEvent } from 'react';
+import { User } from 'generated/graphql';
+import { useState, FormEvent, useEffect } from 'react';
 import styled from 'styled-components';
+import { useHistory } from 'react-router-dom';
+import { CreateUserInput } from 'generated/generated/graphql';
 
 const Container = styled.div`
   width: 100vw;
@@ -32,7 +35,9 @@ const CREATE_USER = gql`
 `;
 
 const Register = () => {
-  const [createUser, { data }] = useMutation(CREATE_USER);
+  const history = useHistory();
+  const [createUser, { data }] =
+    useMutation<{ createUser: User }, { input: CreateUserInput }>(CREATE_USER);
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -40,14 +45,24 @@ const Register = () => {
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
 
+    // eslint-disable-next-line no-alert
     if (!email || !password) return window.alert('Please enter an email and password!');
 
     createUser({ variables: { input: { email, password } } });
 
-    console.log('d', data);
-
     return false;
   };
+
+  useEffect(() => {
+    if (!data) return;
+
+    const { createUser: user } = data;
+
+    if (user.token) {
+      localStorage.setItem('token', user.token);
+      history.push('/articles');
+    }
+  }, [data]);
 
   return (
     <Container>
@@ -58,9 +73,16 @@ const Register = () => {
         </FormField>
         <FormField>
           <label htmlFor={'password'}>{'Password'}</label>
-          <input id={'password'} type={'password'} value={password} onChange={(e) => setPassword(e.currentTarget.value)} />
+          <input
+            id={'password'}
+            type={'password'}
+            value={password}
+            onChange={(e) => setPassword(e.currentTarget.value)}
+          />
         </FormField>
-        <button type={'submit'} onClick={handleSubmit}>{'Submit'}</button>
+        <button type={'submit'} onClick={handleSubmit}>
+          {'Submit'}
+        </button>
       </Form>
     </Container>
   );
