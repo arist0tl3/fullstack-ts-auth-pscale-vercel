@@ -21,35 +21,47 @@ Access the branch via shell:
 Create the users table:
 
 ```
-CREATE TABLE `users` (
+CREATE TABLE `user` (
   `id` VARCHAR(36) PRIMARY KEY,
   `email` VARCHAR(255) NOT NULL,
-  `password` VARCHAR(60) NOT NULL,
-  `token`
+  `password` VARCHAR(60) NOT NULL
 );
 ```
 
 Create the user tokens table:
 
 ```
-CREATE TABLE `user_tokens` (
+CREATE TABLE `userToken` (
   `id` VARCHAR(36) PRIMARY KEY,
-  `user_id` VARCHAR(36) NOT NULL,
-  `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  `userId` VARCHAR(36) NOT NULL,
+  `createdAt` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   `revoked` BOOLEAN DEFAULT FALSE,
-  `revoked_at` TIMESTAMP,
-  `revoked_reason` VARCHAR(255)
+  `revokedAt` TIMESTAMP,
+  `revokedReason` VARCHAR(255)
 );
 ```
 
-Create the items table:
+Create the articles table:
 
 ```
-CREATE TABLE `items` (
+CREATE TABLE `article` (
   `id` VARCHAR(36) PRIMARY KEY,
-  `description` VARCHAR(255) NOT NULL,
-  `name` VARCHAR(255) NOT NULL,
-  `user_id` VARCHAR(36) NOT NULL
+  `createdAt` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  `createdBy` VARCHAR(36) NOT NULL,
+  `content` VARCHAR(255) NOT NULL,
+  `title` VARCHAR(255) NOT NULL
+);
+```
+
+Create the comments table:
+
+```
+CREATE TABLE `comment` (
+  `id` VARCHAR(36) PRIMARY KEY,
+  `createdAt` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  `articleId` VARCHAR(36) NOT NULL,
+  `createdBy` VARCHAR(36) NOT NULL,
+  `content` VARCHAR(255) NOT NULL
 );
 ```
 
