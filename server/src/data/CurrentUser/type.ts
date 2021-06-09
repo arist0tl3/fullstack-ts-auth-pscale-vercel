@@ -6,7 +6,7 @@ const currentUser = gql`
     email: String
     token: String
 
-    items: [Item]
+    articles: [Article]
   }
 
   extend type Query {

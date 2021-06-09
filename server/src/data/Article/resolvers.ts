@@ -1,9 +1,9 @@
-import Item from './Item';
+import Article from './Article';
 import Mutation from './Mutation';
 import Query from './Query';
 
 export default {
-  Item,
+  Article,
   Mutation,
   Query,
 };

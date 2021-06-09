@@ -29,10 +29,10 @@ export default async function getUser(token: string, knex: Knex): Promise<User |
 
   const tokenId = result;
 
-  const user = await knex('user_tokens')
-    .select('user_tokens.id', 'users.email', 'users.id')
-    .where({ 'user_tokens.id': tokenId, revoked: false })
-    .join('users', 'user_tokens.user_id', '=', 'users.id')
+  const user = await knex('userToken')
+    .select('userToken.id', 'user.email', 'user.id')
+    .where({ 'userToken.id': tokenId, revoked: false })
+    .join('user', 'userToken.userId', '=', 'user.id')
     .first();
 
   return user;

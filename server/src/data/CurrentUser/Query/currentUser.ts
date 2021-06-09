@@ -6,7 +6,7 @@ const currentUser = async (root: object, args: any, ctx: Context): Promise<User 
 
   const { id } = ctx.currentUser;
 
-  return ctx.knex('users').select('id', 'email', 'password').where({ id }).first();
+  return ctx.knex('user').select('id', 'email', 'password').where({ id }).first();
 };
 
 export default currentUser;

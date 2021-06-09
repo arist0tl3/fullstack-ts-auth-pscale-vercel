@@ -156,11 +156,35 @@ export type Scalars = {
   Void: any;
 };
 
+export type Article = {
+  __typename?: 'Article';
+  id?: Maybe<Scalars['String']>;
+  content?: Maybe<Scalars['String']>;
+  title?: Maybe<Scalars['String']>;
+  createdAt?: Maybe<Scalars['DateTime']>;
+  createdBy?: Maybe<User>;
+  createdById?: Maybe<Scalars['String']>;
+};
 
 
-export type CreateItemInput = {
-  description: Scalars['String'];
-  name: Scalars['String'];
+
+export type Comment = {
+  __typename?: 'Comment';
+  id?: Maybe<Scalars['String']>;
+  commentId?: Maybe<Scalars['String']>;
+  createdAt?: Maybe<Scalars['DateTime']>;
+  createdBy?: Maybe<User>;
+  createdById?: Maybe<Scalars['String']>;
+};
+
+export type CreateArticleInput = {
+  content: Scalars['String'];
+  title: Scalars['String'];
+};
+
+export type CreateCommentInput = {
+  commentId: Scalars['String'];
+  content: Scalars['String'];
 };
 
 export type CreateUserInput = {
@@ -174,7 +198,7 @@ export type CurrentUser = {
   id?: Maybe<Scalars['String']>;
   email?: Maybe<Scalars['String']>;
   token?: Maybe<Scalars['String']>;
-  items?: Maybe<Array<Maybe<Item>>>;
+  articles?: Maybe<Array<Maybe<Article>>>;
 };
 
 
@@ -190,14 +214,6 @@ export type CurrentUser = {
 
 
 
-
-export type Item = {
-  __typename?: 'Item';
-  id?: Maybe<Scalars['String']>;
-  description?: Maybe<Scalars['String']>;
-  name?: Maybe<Scalars['String']>;
-  user_id?: Maybe<Scalars['String']>;
-};
 
 
 
@@ -212,13 +228,19 @@ export type Item = {
 export type Mutation = {
   __typename?: 'Mutation';
   root?: Maybe<Scalars['String']>;
-  createItem?: Maybe<Item>;
+  createArticle?: Maybe<Article>;
+  createComment?: Maybe<Comment>;
   createUser?: Maybe<User>;
 };
 
 
-export type MutationCreateItemArgs = {
-  input: CreateItemInput;
+export type MutationCreateArticleArgs = {
+  input: CreateArticleInput;
+};
+
+
+export type MutationCreateCommentArgs = {
+  input: CreateCommentInput;
 };
 
 
@@ -242,8 +264,8 @@ export type MutationCreateUserArgs = {
 export type Query = {
   __typename?: 'Query';
   root?: Maybe<Scalars['String']>;
+  articles: Array<Maybe<Article>>;
   currentUser?: Maybe<CurrentUser>;
-  items: Array<Maybe<Item>>;
 };
 
 
@@ -271,7 +293,7 @@ export type UserToken = {
   revokedAt?: Maybe<Scalars['Date']>;
   revokedReason?: Maybe<Scalars['String']>;
   token?: Maybe<Scalars['String']>;
-  user_id?: Maybe<Scalars['String']>;
+  userId?: Maybe<Scalars['String']>;
 };
 
 
@@ -354,10 +376,13 @@ export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs
 
 /** Mapping between all available schema types and the resolvers types */
 export type ResolversTypes = {
+  Article: ResolverTypeWrapper<Article>;
+  String: ResolverTypeWrapper<Scalars['String']>;
   BigInt: ResolverTypeWrapper<Scalars['BigInt']>;
   Byte: ResolverTypeWrapper<Scalars['Byte']>;
-  CreateItemInput: CreateItemInput;
-  String: ResolverTypeWrapper<Scalars['String']>;
+  Comment: ResolverTypeWrapper<Comment>;
+  CreateArticleInput: CreateArticleInput;
+  CreateCommentInput: CreateCommentInput;
   CreateUserInput: CreateUserInput;
   Currency: ResolverTypeWrapper<Scalars['Currency']>;
   CurrentUser: ResolverTypeWrapper<CurrentUser>;
@@ -375,7 +400,6 @@ export type ResolversTypes = {
   IPv6: ResolverTypeWrapper<Scalars['IPv6']>;
   ISBN: ResolverTypeWrapper<Scalars['ISBN']>;
   ISO8601Duration: ResolverTypeWrapper<Scalars['ISO8601Duration']>;
-  Item: ResolverTypeWrapper<Item>;
   JSON: ResolverTypeWrapper<Scalars['JSON']>;
   JSONObject: ResolverTypeWrapper<Scalars['JSONObject']>;
   JWT: ResolverTypeWrapper<Scalars['JWT']>;
@@ -420,10 +444,13 @@ export type ResolversTypes = {
 
 /** Mapping between all available schema types and the resolvers parents */
 export type ResolversParentTypes = {
+  Article: Article;
+  String: Scalars['String'];
   BigInt: Scalars['BigInt'];
   Byte: Scalars['Byte'];
-  CreateItemInput: CreateItemInput;
-  String: Scalars['String'];
+  Comment: Comment;
+  CreateArticleInput: CreateArticleInput;
+  CreateCommentInput: CreateCommentInput;
   CreateUserInput: CreateUserInput;
   Currency: Scalars['Currency'];
   CurrentUser: CurrentUser;
@@ -441,7 +468,6 @@ export type ResolversParentTypes = {
   IPv6: Scalars['IPv6'];
   ISBN: Scalars['ISBN'];
   ISO8601Duration: Scalars['ISO8601Duration'];
-  Item: Item;
   JSON: Scalars['JSON'];
   JSONObject: Scalars['JSONObject'];
   JWT: Scalars['JWT'];
@@ -484,6 +510,16 @@ export type ResolversParentTypes = {
   Void: Scalars['Void'];
 };
 
+export type ArticleResolvers<ContextType = any, ParentType extends ResolversParentTypes['Article'] = ResolversParentTypes['Article']> = {
+  id?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  content?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  title?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  createdAt?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
+  createdBy?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType>;
+  createdById?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
 export interface BigIntScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['BigInt'], any> {
   name: 'BigInt';
 }
@@ -491,6 +527,15 @@ export interface BigIntScalarConfig extends GraphQLScalarTypeConfig<ResolversTyp
 export interface ByteScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['Byte'], any> {
   name: 'Byte';
 }
+
+export type CommentResolvers<ContextType = any, ParentType extends ResolversParentTypes['Comment'] = ResolversParentTypes['Comment']> = {
+  id?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  commentId?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  createdAt?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
+  createdBy?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType>;
+  createdById?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
 
 export interface CurrencyScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['Currency'], any> {
   name: 'Currency';
@@ -500,7 +545,7 @@ export type CurrentUserResolvers<ContextType = any, ParentType extends Resolvers
   id?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   email?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   token?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  items?: Resolver<Maybe<Array<Maybe<ResolversTypes['Item']>>>, ParentType, ContextType>;
+  articles?: Resolver<Maybe<Array<Maybe<ResolversTypes['Article']>>>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
@@ -560,14 +605,6 @@ export interface Iso8601DurationScalarConfig extends GraphQLScalarTypeConfig<Res
   name: 'ISO8601Duration';
 }
 
-export type ItemResolvers<ContextType = any, ParentType extends ResolversParentTypes['Item'] = ResolversParentTypes['Item']> = {
-  id?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  description?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  name?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  user_id?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-};
-
 export interface JsonScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['JSON'], any> {
   name: 'JSON';
 }
@@ -610,7 +647,8 @@ export interface MacScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes[
 
 export type MutationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
   root?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  createItem?: Resolver<Maybe<ResolversTypes['Item']>, ParentType, ContextType, RequireFields<MutationCreateItemArgs, 'input'>>;
+  createArticle?: Resolver<Maybe<ResolversTypes['Article']>, ParentType, ContextType, RequireFields<MutationCreateArticleArgs, 'input'>>;
+  createComment?: Resolver<Maybe<ResolversTypes['Comment']>, ParentType, ContextType, RequireFields<MutationCreateCommentArgs, 'input'>>;
   createUser?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType, RequireFields<MutationCreateUserArgs, 'input'>>;
 };
 
@@ -668,8 +706,8 @@ export interface PostalCodeScalarConfig extends GraphQLScalarTypeConfig<Resolver
 
 export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
   root?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  articles?: Resolver<Array<Maybe<ResolversTypes['Article']>>, ParentType, ContextType>;
   currentUser?: Resolver<Maybe<ResolversTypes['CurrentUser']>, ParentType, ContextType>;
-  items?: Resolver<Array<Maybe<ResolversTypes['Item']>>, ParentType, ContextType>;
 };
 
 export interface RgbScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['RGB'], any> {
@@ -726,7 +764,7 @@ export type UserTokenResolvers<ContextType = any, ParentType extends ResolversPa
   revokedAt?: Resolver<Maybe<ResolversTypes['Date']>, ParentType, ContextType>;
   revokedReason?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   token?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  user_id?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  userId?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
@@ -739,8 +777,10 @@ export interface VoidScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes
 }
 
 export type Resolvers<ContextType = any> = {
+  Article?: ArticleResolvers<ContextType>;
   BigInt?: GraphQLScalarType;
   Byte?: GraphQLScalarType;
+  Comment?: CommentResolvers<ContextType>;
   Currency?: GraphQLScalarType;
   CurrentUser?: CurrentUserResolvers<ContextType>;
   Date?: GraphQLScalarType;
@@ -757,7 +797,6 @@ export type Resolvers<ContextType = any> = {
   IPv6?: GraphQLScalarType;
   ISBN?: GraphQLScalarType;
   ISO8601Duration?: GraphQLScalarType;
-  Item?: ItemResolvers<ContextType>;
   JSON?: GraphQLScalarType;
   JSONObject?: GraphQLScalarType;
   JWT?: GraphQLScalarType;

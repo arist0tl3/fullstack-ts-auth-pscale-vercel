@@ -1,8 +1,9 @@
 import { gql } from 'apollo-server-express';
 import { typeDefs as graphqlScalarsTypeDefs } from 'graphql-scalars';
 
+import article from './Article/type';
+import comment from './Comment/type';
 import currentUser from './CurrentUser/type';
-import item from './Item/type';
 import user from './User/type';
 import userToken from './UserToken/type';
 
@@ -20,8 +21,9 @@ const types = [
 
   root,
 
+  article,
+  comment,
   currentUser,
-  item,
   user,
   userToken,
 ];

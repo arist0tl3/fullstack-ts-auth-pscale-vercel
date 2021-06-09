@@ -8,7 +8,7 @@ const userToken = gql`
     revokedAt: Date
     revokedReason: String
     token: String
-    user_id: String
+    userId: String
   }
 `;
 

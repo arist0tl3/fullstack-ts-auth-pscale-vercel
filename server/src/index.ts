@@ -31,7 +31,7 @@ const init = async () => {
     });
 
     knex.on('query', (query) => {
-      if (!query.sql.includes('select `user_tokens`')) console.log(`Executed a query: ${query.sql}`);
+      if (!query.sql.includes('select `userToken`')) console.log(`Executed a query: ${query.sql}`);
     });
 
     // Establish the connection
@@ -65,8 +65,6 @@ const init = async () => {
       },
       playground: true,
       schema,
-      subscriptions: false,
-      introspection: false,
     });
 
     await server.start();
