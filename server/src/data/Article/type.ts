@@ -15,11 +15,16 @@ const article = gql`
     title: String!
   }
 
+  input ArticleQueryInput {
+    articleId: String!
+  }
+
   extend type Mutation {
     createArticle(input: CreateArticleInput!): Article
   }
 
   extend type Query {
+    article(input: ArticleQueryInput!): Article
     articles: [Article]!
   }
 `;

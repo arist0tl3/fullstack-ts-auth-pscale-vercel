@@ -166,6 +166,10 @@ export type Article = {
   createdById?: Maybe<Scalars['String']>;
 };
 
+export type ArticleQueryInput = {
+  articleId: Scalars['String'];
+};
+
 
 
 export type Comment = {
@@ -264,8 +268,14 @@ export type MutationCreateUserArgs = {
 export type Query = {
   __typename?: 'Query';
   root?: Maybe<Scalars['String']>;
+  article?: Maybe<Article>;
   articles: Array<Maybe<Article>>;
   currentUser?: Maybe<CurrentUser>;
+};
+
+
+export type QueryArticleArgs = {
+  input: ArticleQueryInput;
 };
 
 
@@ -378,6 +388,7 @@ export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs
 export type ResolversTypes = {
   Article: ResolverTypeWrapper<Article>;
   String: ResolverTypeWrapper<Scalars['String']>;
+  ArticleQueryInput: ArticleQueryInput;
   BigInt: ResolverTypeWrapper<Scalars['BigInt']>;
   Byte: ResolverTypeWrapper<Scalars['Byte']>;
   Comment: ResolverTypeWrapper<Comment>;
@@ -446,6 +457,7 @@ export type ResolversTypes = {
 export type ResolversParentTypes = {
   Article: Article;
   String: Scalars['String'];
+  ArticleQueryInput: ArticleQueryInput;
   BigInt: Scalars['BigInt'];
   Byte: Scalars['Byte'];
   Comment: Comment;
@@ -706,6 +718,7 @@ export interface PostalCodeScalarConfig extends GraphQLScalarTypeConfig<Resolver
 
 export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
   root?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  article?: Resolver<Maybe<ResolversTypes['Article']>, ParentType, ContextType, RequireFields<QueryArticleArgs, 'input'>>;
   articles?: Resolver<Array<Maybe<ResolversTypes['Article']>>, ParentType, ContextType>;
   currentUser?: Resolver<Maybe<ResolversTypes['CurrentUser']>, ParentType, ContextType>;
 };

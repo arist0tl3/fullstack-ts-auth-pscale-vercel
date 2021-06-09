@@ -1,28 +1,10 @@
 import { gql, useMutation } from '@apollo/client';
 import { User } from 'generated/graphql';
 import { useState, FormEvent, useEffect } from 'react';
-import styled from 'styled-components';
 import { useHistory } from 'react-router-dom';
 import { CreateUserInput } from 'generated/generated/graphql';
 
-const Container = styled.div`
-  width: 100vw;
-  height: calc(var(--vh, 1vh) * 100);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`;
-
-const Form = styled.form``;
-
-const FormField = styled.div`
-  display: flex;
-  flex-direction: column;
-
-  label {
-    margin-bottom: 4px;
-  }
-`;
+import { Form, FormField, Container } from 'Components/_shared';
 
 const CREATE_USER = gql`
   mutation CreateUser($input: CreateUserInput!) {
