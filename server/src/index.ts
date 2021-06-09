@@ -70,7 +70,7 @@ const init = async () => {
     await server.start();
 
     // Use process.env as default
-    const PORT = process.env.PORT || 3000;
+    const PORT = process.env.PORT || 3333;
 
     // Whitelist all routes with cors
     app.use(cors());

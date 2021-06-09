@@ -47,7 +47,7 @@ Create the articles table:
 CREATE TABLE `article` (
   `id` VARCHAR(36) PRIMARY KEY,
   `createdAt` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  `createdBy` VARCHAR(36) NOT NULL,
+  `createdById` VARCHAR(36) NOT NULL,
   `content` VARCHAR(255) NOT NULL,
   `title` VARCHAR(255) NOT NULL
 );
@@ -60,7 +60,7 @@ CREATE TABLE `comment` (
   `id` VARCHAR(36) PRIMARY KEY,
   `createdAt` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   `articleId` VARCHAR(36) NOT NULL,
-  `createdBy` VARCHAR(36) NOT NULL,
+  `createdById` VARCHAR(36) NOT NULL,
   `content` VARCHAR(255) NOT NULL
 );
 ```
