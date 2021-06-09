@@ -1,25 +1,26 @@
-import { gql, useQuery } from '@apollo/client';
+import { Switch, Route } from 'react-router-dom';
 
-const ROOT = gql`
-  query {
-    root
-  }
-`;
-
-function Root() {
-  const { loading, error, data } = useQuery(ROOT);
-
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p>Error :(</p>;
-
-  return <div>{data.root}</div>;
-}
+import Articles from 'Components/Articles';
+import Home from 'Components/Home';
+import Login from 'Components/Login';
+import Register from 'Components/Register';
 
 function App() {
   return (
-    <div>
-      <Root />
-    </div>
+    <Switch>
+      <Route path={'/login'}>
+        <Login />
+      </Route>
+      <Route path={'/register'}>
+        <Register />
+      </Route>
+      <Route path={'/articles'}>
+        <Articles />
+      </Route>
+      <Route path={'/'}>
+        <Home />
+      </Route>
+    </Switch>
   );
 }
 
