@@ -175,7 +175,7 @@ export type ArticleQueryInput = {
 export type Comment = {
   __typename?: 'Comment';
   id?: Maybe<Scalars['String']>;
-  commentId?: Maybe<Scalars['String']>;
+  articleId?: Maybe<Scalars['String']>;
   createdAt?: Maybe<Scalars['DateTime']>;
   createdBy?: Maybe<User>;
   createdById?: Maybe<Scalars['String']>;
@@ -187,7 +187,7 @@ export type CreateArticleInput = {
 };
 
 export type CreateCommentInput = {
-  commentId: Scalars['String'];
+  articleId: Scalars['String'];
   content: Scalars['String'];
 };
 
@@ -542,7 +542,7 @@ export interface ByteScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes
 
 export type CommentResolvers<ContextType = any, ParentType extends ResolversParentTypes['Comment'] = ResolversParentTypes['Comment']> = {
   id?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  commentId?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  articleId?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   createdAt?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
   createdBy?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType>;
   createdById?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;

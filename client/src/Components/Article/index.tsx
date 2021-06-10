@@ -1,21 +1,8 @@
-import { gql, useQuery } from '@apollo/client';
+import { useQuery } from '@apollo/client';
 import { Article } from 'generated/generated/graphql';
 import { useParams } from 'react-router-dom';
 
-export const ARTICLE = gql`
-  query Article($input: ArticleQueryInput!) {
-    article(input: $input) {
-      id
-      title
-      content
-      createdAt
-      createdBy {
-        id
-        email
-      }
-    }
-  }
-`;
+import ARTICLE from 'data/Query/Article';
 
 interface ArticleData {
   article: Article
@@ -43,6 +30,9 @@ const Articles = () => {
       <div>
         <h1>{article.title}</h1>
         <p>{article.content}</p>
+        <div>
+          <h2>{'Comments'}</h2>
+        </div>
       </div>
     </div>
   );

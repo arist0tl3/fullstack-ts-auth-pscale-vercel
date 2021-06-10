@@ -1,20 +1,12 @@
 import { useHistory } from 'react-router-dom';
-import { gql, useMutation } from '@apollo/client';
+import { useMutation } from '@apollo/client';
 import { useState, FormEvent, useEffect } from 'react';
 import { CreateArticleInput, Article } from 'generated/generated/graphql';
 
-import { Form, FormField, Container } from 'Components/_shared';
-import { ARTICLES } from 'Components/Articles';
+import ARTICLES from 'data/Query/Articles';
+import CREATE_ARTICLE from 'data/Mutation/CreateArticle';
 
-const CREATE_ARTICLE = gql`
-  mutation CreateArticle($input: CreateArticleInput!) {
-    createArticle(input: $input) {
-      id
-      content
-      title
-    }
-  }
-`;
+import { Form, FormField, Container } from 'Components/_shared';
 
 const NewArticle = () => {
   const history = useHistory();

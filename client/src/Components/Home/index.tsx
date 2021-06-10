@@ -1,6 +1,8 @@
 import styled from 'styled-components';
 import { Link, Redirect } from 'react-router-dom';
-import { gql, useQuery } from '@apollo/client';
+import { useQuery } from '@apollo/client';
+
+import CURRENT_USER from 'data/Query/CurrentUser';
 
 import { CurrentUser } from 'generated/graphql';
 
@@ -18,16 +20,6 @@ const Links = styled.div`
 
   > * {
     margin: 0 4px;
-  }
-`;
-
-const CURRENT_USER = gql`
-  query {
-    currentUser {
-      id
-      email
-      token
-    }
   }
 `;
 

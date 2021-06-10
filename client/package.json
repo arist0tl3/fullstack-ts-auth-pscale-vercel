@@ -21,6 +21,7 @@
     "web-vitals": "^1.1.2"
   },
   "scripts": {
+    "copy": "cp -r ../server/src/generated ./src/generated",
     "start": "cp -r ../server/src/generated ./src/generated && react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",

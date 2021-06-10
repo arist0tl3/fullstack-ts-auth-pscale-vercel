@@ -1,20 +1,12 @@
-import { gql, useMutation } from '@apollo/client';
+import { useMutation } from '@apollo/client';
 import { User } from 'generated/graphql';
 import { useState, FormEvent, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { CreateUserInput } from 'generated/generated/graphql';
 
-import { Form, FormField, Container } from 'Components/_shared';
+import CREATE_USER from 'data/Mutation/CreateUser';
 
-const CREATE_USER = gql`
-  mutation CreateUser($input: CreateUserInput!) {
-    createUser(input: $input) {
-      id
-      email
-      token
-    }
-  }
-`;
+import { Form, FormField, Container } from 'Components/_shared';
 
 const Register = () => {
   const history = useHistory();

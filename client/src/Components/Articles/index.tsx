@@ -1,20 +1,8 @@
 import { Link } from 'react-router-dom';
-import { gql, useQuery } from '@apollo/client';
+import { useQuery } from '@apollo/client';
 import { Article } from 'generated/generated/graphql';
 
-export const ARTICLES = gql`
-  query {
-    articles {
-      id
-      createdBy {
-        id
-        email
-      }
-      content
-      title
-    }
-  }
-`;
+import ARTICLES from 'data/Query/Articles';
 
 interface ArticlesData {
   articles: Article[]
