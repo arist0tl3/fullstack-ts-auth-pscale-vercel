@@ -32,6 +32,8 @@ const NewComment = ({ articleId } : { articleId: string }) => {
       variables: { input: { articleId, content } },
     });
 
+    setContent(() => '');
+
     return false;
   };
 

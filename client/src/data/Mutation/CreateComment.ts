@@ -5,7 +5,6 @@ const CREATE_COMMENT = gql`
     createComment(input: $input) {
       id
       content
-      title
     }
   }
 `;

@@ -11,6 +11,14 @@ const ARTICLE = gql`
         id
         email
       }
+      comments {
+        id
+        content
+        createdBy {
+          id
+          email
+        }
+      }
     }
   }
 `;
