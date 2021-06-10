@@ -2,11 +2,12 @@ import { gql } from 'apollo-server-express';
 
 const comment = gql`
   type Comment {
-    id: String
-    articleId: String
-    createdAt: DateTime
-    createdBy: User
-    createdById: String
+    id: String!
+    articleId: String!
+    content: String!
+    createdAt: DateTime!
+    createdBy: User!
+    createdById: String!
   }
 
   input CreateCommentInput {

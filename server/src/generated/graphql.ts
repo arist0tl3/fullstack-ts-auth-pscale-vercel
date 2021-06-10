@@ -158,12 +158,13 @@ export type Scalars = {
 
 export type Article = {
   __typename?: 'Article';
-  id?: Maybe<Scalars['String']>;
-  content?: Maybe<Scalars['String']>;
-  title?: Maybe<Scalars['String']>;
-  createdAt?: Maybe<Scalars['DateTime']>;
-  createdBy?: Maybe<User>;
-  createdById?: Maybe<Scalars['String']>;
+  id: Scalars['String'];
+  content: Scalars['String'];
+  title: Scalars['String'];
+  createdAt: Scalars['DateTime'];
+  createdBy: User;
+  createdById: Scalars['String'];
+  comments?: Maybe<Array<Comment>>;
 };
 
 export type ArticleQueryInput = {
@@ -174,11 +175,12 @@ export type ArticleQueryInput = {
 
 export type Comment = {
   __typename?: 'Comment';
-  id?: Maybe<Scalars['String']>;
-  articleId?: Maybe<Scalars['String']>;
-  createdAt?: Maybe<Scalars['DateTime']>;
-  createdBy?: Maybe<User>;
-  createdById?: Maybe<Scalars['String']>;
+  id: Scalars['String'];
+  articleId: Scalars['String'];
+  content: Scalars['String'];
+  createdAt: Scalars['DateTime'];
+  createdBy: User;
+  createdById: Scalars['String'];
 };
 
 export type CreateArticleInput = {
@@ -523,12 +525,13 @@ export type ResolversParentTypes = {
 };
 
 export type ArticleResolvers<ContextType = any, ParentType extends ResolversParentTypes['Article'] = ResolversParentTypes['Article']> = {
-  id?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  content?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  title?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  createdAt?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
-  createdBy?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType>;
-  createdById?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  content?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  title?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  createdAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
+  createdBy?: Resolver<ResolversTypes['User'], ParentType, ContextType>;
+  createdById?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  comments?: Resolver<Maybe<Array<ResolversTypes['Comment']>>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
@@ -541,11 +544,12 @@ export interface ByteScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes
 }
 
 export type CommentResolvers<ContextType = any, ParentType extends ResolversParentTypes['Comment'] = ResolversParentTypes['Comment']> = {
-  id?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  articleId?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  createdAt?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
-  createdBy?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType>;
-  createdById?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  articleId?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  content?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  createdAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
+  createdBy?: Resolver<ResolversTypes['User'], ParentType, ContextType>;
+  createdById?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 

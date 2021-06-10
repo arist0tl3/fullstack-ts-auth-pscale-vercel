@@ -3,7 +3,6 @@ import 'dotenv/config';
 import cors from 'cors';
 import express, { Request, Response, NextFunction } from 'express';
 import compression from 'compression';
-import mysql, { Connection } from 'mysql2/promise';
 import { ApolloServer } from 'apollo-server-express';
 import k from 'knex';
 
@@ -17,31 +16,19 @@ const { DATABASE_URL } = process.env;
 // Create express app
 const app = express();
 
-// Placeholder for our db connection
-let connection: Connection;
+// Ensure we have a url to connect to
+if (!DATABASE_URL) throw new Error('Missing DATABASE_URL');
+
+export const knex = k({
+  client: 'mysql2',
+  connection: DATABASE_URL,
+});
 
 const init = async () => {
   try {
-    // Ensure we have a url to connect to
-    if (!DATABASE_URL) throw new Error('Missing DATABASE_URL');
-
-    const knex = k({
-      client: 'mysql2',
-      connection: DATABASE_URL,
-    });
-
     knex.on('query', (query) => {
       if (!query.sql.includes('select `userToken`')) console.log(`Executed a query: ${query.sql}`);
     });
-
-    // Establish the connection
-    if (!connection) {
-      connection = await mysql.createConnection({
-        connectTimeout: 30000,
-        uri: DATABASE_URL,
-      });
-      await connection.connect();
-    }
 
     const server = new ApolloServer({
       context: async ({ req }) => {
@@ -105,11 +92,7 @@ const init = async () => {
 function shutDown() {
   console.log('Received kill signal, shutting down gracefully');
 
-  if (connection) {
-    connection.destroy();
-    process.kill(process.pid, 'SIGUSR2');
-    process.exit(0);
-  }
+  knex.destroy();
 
   setTimeout(() => {
     console.error('Could not close connections in time, forcefully shutting down');
