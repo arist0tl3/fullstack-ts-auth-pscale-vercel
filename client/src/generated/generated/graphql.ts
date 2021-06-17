@@ -164,7 +164,7 @@ export type Article = {
   createdAt?: Maybe<Scalars['DateTime']>;
   createdBy?: Maybe<User>;
   createdById?: Maybe<Scalars['String']>;
-  comments?: Maybe<Array<Maybe<Comment>>>;
+  comments?: Maybe<Array<Comment>>;
 };
 
 export type ArticleQueryInput = {
@@ -532,7 +532,7 @@ export type ArticleResolvers<ContextType = any, ParentType extends ResolversPare
   createdAt?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
   createdBy?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType>;
   createdById?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  comments?: Resolver<Maybe<Array<Maybe<ResolversTypes['Comment']>>>, ParentType, ContextType>;
+  comments?: Resolver<Maybe<Array<ResolversTypes['Comment']>>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 

@@ -33,6 +33,7 @@ const resolveGraph = GraphResolver({
     fields: {
       id: true,
       email: true,
+      token: true,
     },
   }),
 });

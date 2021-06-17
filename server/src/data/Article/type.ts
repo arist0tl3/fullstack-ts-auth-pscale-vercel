@@ -9,7 +9,7 @@ const article = gql`
     createdBy: User
     createdById: String
 
-    comments: [Comment]
+    comments: [Comment!]
   }
 
   input CreateArticleInput {
