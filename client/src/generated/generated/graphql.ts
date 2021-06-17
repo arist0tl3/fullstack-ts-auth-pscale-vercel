@@ -159,12 +159,12 @@ export type Scalars = {
 export type Article = {
   __typename?: 'Article';
   id: Scalars['String'];
-  content: Scalars['String'];
-  title: Scalars['String'];
-  createdAt: Scalars['DateTime'];
-  createdBy: User;
-  createdById: Scalars['String'];
-  comments?: Maybe<Array<Comment>>;
+  content?: Maybe<Scalars['String']>;
+  title?: Maybe<Scalars['String']>;
+  createdAt?: Maybe<Scalars['DateTime']>;
+  createdBy?: Maybe<User>;
+  createdById?: Maybe<Scalars['String']>;
+  comments?: Maybe<Array<Maybe<Comment>>>;
 };
 
 export type ArticleQueryInput = {
@@ -306,6 +306,7 @@ export type UserToken = {
   revokedReason?: Maybe<Scalars['String']>;
   token?: Maybe<Scalars['String']>;
   userId?: Maybe<Scalars['String']>;
+  user?: Maybe<User>;
 };
 
 
@@ -526,12 +527,12 @@ export type ResolversParentTypes = {
 
 export type ArticleResolvers<ContextType = any, ParentType extends ResolversParentTypes['Article'] = ResolversParentTypes['Article']> = {
   id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  content?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  title?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  createdAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
-  createdBy?: Resolver<ResolversTypes['User'], ParentType, ContextType>;
-  createdById?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  comments?: Resolver<Maybe<Array<ResolversTypes['Comment']>>, ParentType, ContextType>;
+  content?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  title?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  createdAt?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
+  createdBy?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType>;
+  createdById?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  comments?: Resolver<Maybe<Array<Maybe<ResolversTypes['Comment']>>>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
@@ -782,6 +783,7 @@ export type UserTokenResolvers<ContextType = any, ParentType extends ResolversPa
   revokedReason?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   token?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   userId?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  user?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
