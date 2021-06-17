@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { ApolloProvider } from '@apollo/client';
 import { BrowserRouter as Router } from 'react-router-dom';
+import CssBaseline from '@material-ui/core/CssBaseline';
 
 import './index.css';
 
@@ -11,11 +12,13 @@ import App from './App';
 
 ReactDOM.render(
   <React.StrictMode>
-    <ApolloProvider client={client}>
-      <Router>
-        <App />
-      </Router>
-    </ApolloProvider>
+    <CssBaseline>
+      <ApolloProvider client={client}>
+        <Router>
+          <App />
+        </Router>
+      </ApolloProvider>
+    </CssBaseline>
   </React.StrictMode>,
   document.getElementById('root'),
 );
