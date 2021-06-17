@@ -15,9 +15,17 @@ const Container = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  overflow-x: hidden;
 `;
 
-const Content = styled.div``;
+const Content = styled.div`
+  height: calc((var(--vh, 1vh) * 100) - 64px);
+  width: 100%;
+  position: absolute;
+  top: 64px;
+  overflow: auto;
+  padding: 16px;
+`;
 
 function App() {
   return (

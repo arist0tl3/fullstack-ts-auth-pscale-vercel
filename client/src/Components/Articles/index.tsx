@@ -1,8 +1,11 @@
-import { Link } from 'react-router-dom';
 import { useQuery } from '@apollo/client';
 import { Article } from 'generated/generated/graphql';
 
 import ARTICLES from 'data/Query/Articles';
+
+import { UnstyledLink } from 'Components/_shared';
+
+import ArticleCard from './_components/ArticleCard';
 
 interface ArticlesData {
   articles: Article[];
@@ -19,12 +22,15 @@ export default function Articles() {
       <div>
         {data &&
           data.articles.map((article) => (
-            <div key={article.id}>
-              <Link to={`/articles/${article.id}`}>{article.title}</Link>
-            </div>
+            <UnstyledLink key={article.id} to={`/articles/${article.id}`}>
+              <ArticleCard
+                title={article.title}
+                content={article.content}
+              />
+            </UnstyledLink>
           ))}
       </div>
-      <Link to={'/articles/new'}>{'New Article'}</Link>
+      <UnstyledLink to={'/articles/new'}>{'New Article'}</UnstyledLink>
     </div>
   );
 }

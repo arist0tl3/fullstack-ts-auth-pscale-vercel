@@ -159,8 +159,8 @@ export type Scalars = {
 export type Article = {
   __typename?: 'Article';
   id: Scalars['String'];
-  content?: Maybe<Scalars['String']>;
-  title?: Maybe<Scalars['String']>;
+  content: Scalars['String'];
+  title: Scalars['String'];
   createdAt?: Maybe<Scalars['DateTime']>;
   createdBy?: Maybe<User>;
   createdById?: Maybe<Scalars['String']>;
@@ -527,8 +527,8 @@ export type ResolversParentTypes = {
 
 export type ArticleResolvers<ContextType = any, ParentType extends ResolversParentTypes['Article'] = ResolversParentTypes['Article']> = {
   id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  content?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  title?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  content?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  title?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   createdAt?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
   createdBy?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType>;
   createdById?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
