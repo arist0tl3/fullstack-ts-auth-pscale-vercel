@@ -21,13 +21,23 @@ const article = gql`
     articleId: String!
   }
 
+  enum OrderDirections {
+    ASC
+    DESC
+  }
+
+  input ArticlesQueryInput {
+    orderBy: String!
+    orderDirection: OrderDirections!
+  }
+
   extend type Mutation {
     createArticle(input: CreateArticleInput!): Article
   }
 
   extend type Query {
     article(input: ArticleQueryInput!): Article
-    articles: [Article]!
+    articles(input: ArticlesQueryInput!): [Article]!
   }
 `;
 

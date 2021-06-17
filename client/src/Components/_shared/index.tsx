@@ -13,7 +13,25 @@ export const Container = styled.div`
   justify-content: center;
 `;
 
-export const Form = styled.form``;
+export const FormWrapper = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
+
+export const Form = styled.form`
+  width: 100%;
+  max-width: 480px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+
+  > * {
+    width: 100%;
+    margin-bottom: 16px;
+  }
+`;
 
 export const FormField = styled.div`
   display: flex;

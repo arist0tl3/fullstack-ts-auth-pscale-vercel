@@ -171,6 +171,11 @@ export type ArticleQueryInput = {
   articleId: Scalars['String'];
 };
 
+export type ArticlesQueryInput = {
+  orderBy: Scalars['String'];
+  orderDirection: OrderDirections;
+};
+
 
 
 export type Comment = {
@@ -262,6 +267,11 @@ export type MutationCreateUserArgs = {
 
 
 
+export enum OrderDirections {
+  Asc = 'ASC',
+  Desc = 'DESC'
+}
+
 
 
 
@@ -278,6 +288,11 @@ export type Query = {
 
 export type QueryArticleArgs = {
   input: ArticleQueryInput;
+};
+
+
+export type QueryArticlesArgs = {
+  input: ArticlesQueryInput;
 };
 
 
@@ -392,6 +407,7 @@ export type ResolversTypes = {
   Article: ResolverTypeWrapper<Article>;
   String: ResolverTypeWrapper<Scalars['String']>;
   ArticleQueryInput: ArticleQueryInput;
+  ArticlesQueryInput: ArticlesQueryInput;
   BigInt: ResolverTypeWrapper<Scalars['BigInt']>;
   Byte: ResolverTypeWrapper<Scalars['Byte']>;
   Comment: ResolverTypeWrapper<Comment>;
@@ -433,6 +449,7 @@ export type ResolversTypes = {
   NonPositiveFloat: ResolverTypeWrapper<Scalars['NonPositiveFloat']>;
   NonPositiveInt: ResolverTypeWrapper<Scalars['NonPositiveInt']>;
   ObjectID: ResolverTypeWrapper<Scalars['ObjectID']>;
+  OrderDirections: OrderDirections;
   PhoneNumber: ResolverTypeWrapper<Scalars['PhoneNumber']>;
   Port: ResolverTypeWrapper<Scalars['Port']>;
   PositiveFloat: ResolverTypeWrapper<Scalars['PositiveFloat']>;
@@ -461,6 +478,7 @@ export type ResolversParentTypes = {
   Article: Article;
   String: Scalars['String'];
   ArticleQueryInput: ArticleQueryInput;
+  ArticlesQueryInput: ArticlesQueryInput;
   BigInt: Scalars['BigInt'];
   Byte: Scalars['Byte'];
   Comment: Comment;
@@ -724,7 +742,7 @@ export interface PostalCodeScalarConfig extends GraphQLScalarTypeConfig<Resolver
 export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
   root?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   article?: Resolver<Maybe<ResolversTypes['Article']>, ParentType, ContextType, RequireFields<QueryArticleArgs, 'input'>>;
-  articles?: Resolver<Array<Maybe<ResolversTypes['Article']>>, ParentType, ContextType>;
+  articles?: Resolver<Array<Maybe<ResolversTypes['Article']>>, ParentType, ContextType, RequireFields<QueryArticlesArgs, 'input'>>;
   currentUser?: Resolver<Maybe<ResolversTypes['CurrentUser']>, ParentType, ContextType>;
 };
 
