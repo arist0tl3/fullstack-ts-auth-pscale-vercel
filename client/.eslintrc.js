@@ -34,6 +34,7 @@ module.exports = {
     'react/jsx-one-expression-per-line': 0,
     'react/jsx-wrap-multilines': 0,
     'react/react-in-jsx-scope': 0,
+    'react/require-default-props': 0,
   },
   settings: {
     'import/parsers': {

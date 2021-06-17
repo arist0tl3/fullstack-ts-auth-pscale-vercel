@@ -8,7 +8,13 @@ import CREATE_COMMENT from 'data/Mutation/CreateComment';
 
 import { Form, FormField, Container } from 'Components/_shared';
 
-export default function NewComment({ articleId }: { articleId: string }) {
+const NewCommentPropTypes = {
+  articleId: PropTypes.string.isRequired,
+};
+
+type NewCommentProps = PropTypes.InferProps<typeof NewCommentPropTypes>;
+
+export default function NewComment({ articleId }: NewCommentProps) {
   const [createComment] = useMutation<{ createComment: Comment }, { input: CreateCommentInput }>(CREATE_COMMENT);
 
   const [content, setContent] = useState('');
@@ -53,6 +59,4 @@ export default function NewComment({ articleId }: { articleId: string }) {
   );
 }
 
-NewComment.propTypes = {
-  articleId: PropTypes.string.isRequired,
-};
+NewComment.propTypes = NewCommentPropTypes;
