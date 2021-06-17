@@ -1,6 +1,12 @@
 import { Article } from 'generated/graphql';
 import { Context } from 'types/context';
+import { GraphQLResolveInfo } from 'graphql';
 
-const articles = async (root: object, args: any, ctx: Context): Promise<Article[]> => ctx.knex('article').select('id', 'content', 'title', 'createdById', 'createdAt').orderBy('createdAt', 'desc');
+import ArticleModel from 'models/Article';
+import resolveGraph from 'models/resolveGraph';
+
+const articles = async (root: object, args: any, ctx: Context, info: GraphQLResolveInfo): Promise<Article[]> => {
+  return resolveGraph(ctx, info, ArticleModel.query());
+};
 
 export default articles;

@@ -8,6 +8,7 @@
       "alias": {
         "data": "./src/data",
         "generated": "./src/generated",
+        "models": "./src/models",
         "types": "./src/types"
       },
       "extensions": [".js", ".ts"]

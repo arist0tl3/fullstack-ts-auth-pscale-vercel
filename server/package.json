@@ -28,8 +28,10 @@
     "graphql": "^15.5.0",
     "graphql-scalars": "^1.9.3",
     "jsonwebtoken": "^8.5.1",
-    "knex": "^0.95.6",
+    "knex": "^0.21.19",
     "mysql2": "^2.2.5",
+    "objection": "^2.2.15",
+    "objection-graphql-resolver": "^4.0.1",
     "uuid": "^8.3.2"
   },
   "devDependencies": {

@@ -1,12 +1,14 @@
 import { User } from 'generated/graphql';
 import { Context } from 'types/context';
+import { GraphQLResolveInfo } from 'graphql';
 
-const currentUser = async (root: object, args: any, ctx: Context): Promise<User | null> => {
-  if (!ctx.currentUser) return null;
+import UserModel from 'models/User';
+import resolveGraph from 'models/resolveGraph';
 
-  const { id } = ctx.currentUser;
+const currentUser = async (root: object, args: any, ctx: Context, info: GraphQLResolveInfo): Promise<User | null> => {
+  if (!ctx?.currentUser?.id) return null;
 
-  return ctx.knex('user').select('id', 'email', 'password').where({ id }).first();
+  return resolveGraph(ctx, info, UserModel.query().findById(ctx.currentUser.id));
 };
 
 export default currentUser;

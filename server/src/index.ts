@@ -4,14 +4,15 @@ import cors from 'cors';
 import express, { Request, Response, NextFunction } from 'express';
 import compression from 'compression';
 import { ApolloServer } from 'apollo-server-express';
-import k from 'knex';
+import createKnex from 'knex';
+import { Model } from 'objection';
 
 import schema from 'data/schema';
 
 import getUser from './utils/getUser';
 import stripBearerFromAuthHeader from './utils/stripBearerFromAuthHeader';
 
-const { DATABASE_URL } = process.env;
+const { DATABASE_URL, DEBUG = false } = process.env;
 
 // Create express app
 const app = express();
@@ -19,16 +20,20 @@ const app = express();
 // Ensure we have a url to connect to
 if (!DATABASE_URL) throw new Error('Missing DATABASE_URL');
 
-export const knex = k({
+export const knex = createKnex({
   client: 'mysql2',
   connection: DATABASE_URL,
 });
 
+Model.knex(knex);
+
 const init = async () => {
   try {
-    knex.on('query', (query) => {
-      if (!query.sql.includes('select `userToken`')) console.log(`Executed a query: ${query.sql}`);
-    });
+    if (DEBUG) {
+      knex.on('query', (query) => {
+        console.log(`Executed a query: ${query.sql}`);
+      });
+    }
 
     const server = new ApolloServer({
       context: async ({ req }) => {
@@ -42,7 +47,7 @@ const init = async () => {
           };
         }
 
-        const currentUser = await getUser(token, knex);
+        const currentUser = await getUser(token);
 
         return {
           ...req,
@@ -88,22 +93,6 @@ const init = async () => {
     console.log('Error initializing server: ', err.toString());
   }
 };
-
-function shutDown() {
-  console.log('Received kill signal, shutting down gracefully');
-
-  knex.destroy();
-
-  setTimeout(() => {
-    console.error('Could not close connections in time, forcefully shutting down');
-    process.kill(process.pid, 'SIGUSR2');
-    process.exit(1);
-  }, 10000);
-}
-
-process.on('SIGTERM', shutDown);
-process.on('SIGINT', shutDown);
-process.once('SIGUSR2', shutDown);
 
 init();
 

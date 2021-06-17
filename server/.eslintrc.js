@@ -12,9 +12,11 @@ module.exports = {
   plugins: ['@typescript-eslint', 'import'],
   rules: {
     'arrow-body-style': 0,
+    'global-require': 0,
     'import/extensions': 0,
     'import/no-extraneous-dependencies': 0,
     'import/no-unresolved': 2,
+    'lines-between-class-members': 0,
     'max-len': 0,
     'no-confusing-arrow': 0,
     'no-nested-ternary': 0,

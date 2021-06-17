@@ -2,8 +2,13 @@ import { MutationCreateCommentArgs, Comment } from 'generated/graphql';
 import { Context } from 'types/context';
 import { v4 as uuidv4 } from 'uuid';
 
-const createComment = async (root: object, args: MutationCreateCommentArgs, ctx: Context): Promise<Comment | null> => {
-  const { currentUser, knex } = ctx;
+import { GraphQLResolveInfo } from 'graphql';
+
+import CommentModel from 'models/Comment';
+import resolveGraph from 'models/resolveGraph';
+
+const createComment = async (root: object, args: MutationCreateCommentArgs, ctx: Context, info: GraphQLResolveInfo): Promise<Comment | null> => {
+  const { currentUser } = ctx;
   const { articleId } = args.input;
 
   // Check for current user
@@ -15,9 +20,15 @@ const createComment = async (root: object, args: MutationCreateCommentArgs, ctx:
   // Generate commentId
   const commentId = uuidv4();
 
-  await knex('comment').insert({ id: commentId, articleId, content, createdById: currentUser.id });
+  await CommentModel.query().insert({
+    id: commentId,
+    articleId,
+    content,
+    createdById: currentUser.id,
+  });
 
-  return knex('comment').select('id', 'content', 'createdById').where({ id: commentId }).first();
+  // Return as a graph to automatically resolve any fields
+  return resolveGraph(ctx, info, CommentModel.query().findById(commentId));
 };
 
 export default createComment;
