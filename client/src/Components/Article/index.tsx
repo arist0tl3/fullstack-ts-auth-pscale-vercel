@@ -10,7 +10,7 @@ interface ArticleData {
   article: Article
 }
 
-const Articles = () => {
+export default function Articles() {
   const { articleId } = useParams<{articleId: string}>();
 
   const { loading, error, data } = useQuery<ArticleData>(ARTICLE, {
@@ -46,6 +46,4 @@ const Articles = () => {
       </div>
     </div>
   );
-};
-
-export default Articles;
+}

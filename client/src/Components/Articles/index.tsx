@@ -5,10 +5,10 @@ import { Article } from 'generated/generated/graphql';
 import ARTICLES from 'data/Query/Articles';
 
 interface ArticlesData {
-  articles: Article[]
+  articles: Article[];
 }
 
-const Articles = () => {
+export default function Articles() {
   const { loading, error, data } = useQuery<ArticlesData>(ARTICLES);
 
   if (loading) return null;
@@ -17,15 +17,14 @@ const Articles = () => {
   return (
     <div>
       <div>
-        {data && data.articles.map((article) => (
-          <div key={article.id}>
-            <Link to={`/articles/${article.id}`}>{article.title}</Link>
-          </div>
-        ))}
+        {data &&
+          data.articles.map((article) => (
+            <div key={article.id}>
+              <Link to={`/articles/${article.id}`}>{article.title}</Link>
+            </div>
+          ))}
       </div>
       <Link to={'/articles/new'}>{'New Article'}</Link>
     </div>
   );
-};
-
-export default Articles;
+}

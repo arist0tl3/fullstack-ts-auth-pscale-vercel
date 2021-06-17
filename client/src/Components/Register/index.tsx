@@ -8,10 +8,9 @@ import CREATE_USER from 'data/Mutation/CreateUser';
 
 import { Form, FormField, Container } from 'Components/_shared';
 
-const Register = () => {
+export default function Register() {
   const history = useHistory();
-  const [createUser, { data }] =
-    useMutation<{ createUser: User }, { input: CreateUserInput }>(CREATE_USER);
+  const [createUser, { data }] = useMutation<{ createUser: User }, { input: CreateUserInput }>(CREATE_USER);
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -60,6 +59,4 @@ const Register = () => {
       </Form>
     </Container>
   );
-};
-
-export default Register;
+}

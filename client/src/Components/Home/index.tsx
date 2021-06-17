@@ -23,7 +23,7 @@ const Links = styled.div`
   }
 `;
 
-const Home = () => {
+export default function Home() {
   const { loading, error, data } = useQuery(CURRENT_USER);
 
   if (loading) return null;
@@ -44,6 +44,4 @@ const Home = () => {
       </Links>
     </Container>
   );
-};
-
-export default Home;
+}

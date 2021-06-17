@@ -8,7 +8,7 @@ import CREATE_ARTICLE from 'data/Mutation/CreateArticle';
 
 import { Form, FormField, Container } from 'Components/_shared';
 
-const NewArticle = () => {
+export default function NewArticle() {
   const history = useHistory();
 
   const [createArticle, { data }] =
@@ -24,9 +24,11 @@ const NewArticle = () => {
     if (!title || !content) return window.alert('Please enter a title and content!');
 
     createArticle({
-      refetchQueries: [{
-        query: ARTICLES,
-      }],
+      refetchQueries: [
+        {
+          query: ARTICLES,
+        },
+      ],
       variables: { input: { title, content } },
     });
 
@@ -58,6 +60,4 @@ const NewArticle = () => {
       </Form>
     </Container>
   );
-};
-
-export default NewArticle;
+}

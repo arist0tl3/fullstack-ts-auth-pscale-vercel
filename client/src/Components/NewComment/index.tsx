@@ -8,9 +8,8 @@ import CREATE_COMMENT from 'data/Mutation/CreateComment';
 
 import { Form, FormField, Container } from 'Components/_shared';
 
-const NewComment = ({ articleId } : { articleId: string }) => {
-  const [createComment] =
-    useMutation<{ createComment: Comment }, { input: CreateCommentInput }>(CREATE_COMMENT);
+export default function NewComment({ articleId }: { articleId: string }) {
+  const [createComment] = useMutation<{ createComment: Comment }, { input: CreateCommentInput }>(CREATE_COMMENT);
 
   const [content, setContent] = useState('');
 
@@ -21,14 +20,16 @@ const NewComment = ({ articleId } : { articleId: string }) => {
     if (!content) return window.alert('Please enter a comment!');
 
     createComment({
-      refetchQueries: [{
-        query: ARTICLE,
-        variables: {
-          input: {
-            articleId,
+      refetchQueries: [
+        {
+          query: ARTICLE,
+          variables: {
+            input: {
+              articleId,
+            },
           },
         },
-      }],
+      ],
       variables: { input: { articleId, content } },
     });
 
@@ -50,10 +51,8 @@ const NewComment = ({ articleId } : { articleId: string }) => {
       </Form>
     </Container>
   );
-};
+}
 
 NewComment.propTypes = {
   articleId: PropTypes.string.isRequired,
 };
-
-export default NewComment;
