@@ -48,10 +48,10 @@ export default function Articles() {
         <CommentsWrapper>
           <Typography variant={'h5'}>{'Comments'}</Typography>
           {article.comments &&
-            article.comments.map((comment) => (
-              <div key={comment.id}>
-                <p>{comment.content}</p>
-              </div>
+            [...article.comments].sort((a, b) => a.createdAt < b.createdAt ? 1 : -1).map((comment) => (
+              <Typography key={comment.id} variant={'body1'}>
+                {comment.content}
+              </Typography>
             ))}
           <NewComment articleId={articleId} />
         </CommentsWrapper>

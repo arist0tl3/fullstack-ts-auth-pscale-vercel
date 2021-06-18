@@ -14,6 +14,7 @@ const ARTICLE = gql`
       comments {
         id
         content
+        createdAt
         createdBy {
           id
           email
