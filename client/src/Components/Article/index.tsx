@@ -1,17 +1,30 @@
 import { useQuery } from '@apollo/client';
 import { Article } from 'generated/generated/graphql';
 import { useParams } from 'react-router-dom';
+import styled from 'styled-components';
 
 import ARTICLE from 'data/Query/Article';
+
+import Container from '@material-ui/core/Container';
+import Typography from '@material-ui/core/Typography';
 
 import NewComment from 'Components/NewComment';
 
 interface ArticleData {
-  article: Article
+  article: Article;
 }
 
+const ArticleWrapper = styled(Container)`
+  width: 100%;
+  max-width: 600px;
+`;
+
+const CommentsWrapper = styled.div`
+  margin-top: 32px;
+`;
+
 export default function Articles() {
-  const { articleId } = useParams<{articleId: string}>();
+  const { articleId } = useParams<{ articleId: string }>();
 
   const { loading, error, data } = useQuery<ArticleData>(ARTICLE, {
     variables: {
@@ -28,22 +41,21 @@ export default function Articles() {
   const { article } = data;
 
   return (
-    <div>
+    <ArticleWrapper>
+      <Typography variant={'h2'}>{article.title}</Typography>
+      <Typography variant={'body1'}>{article.content}</Typography>
       <div>
-        <h1>{article.title}</h1>
-        <p>{article.content}</p>
-        <div>
-          <h2>{'Comments'}</h2>
-          {
-            article.comments && article.comments.map((comment) => (
+        <CommentsWrapper>
+          <Typography variant={'h5'}>{'Comments'}</Typography>
+          {article.comments &&
+            article.comments.map((comment) => (
               <div key={comment.id}>
                 <p>{comment.content}</p>
               </div>
-            ))
-          }
+            ))}
           <NewComment articleId={articleId} />
-        </div>
+        </CommentsWrapper>
       </div>
-    </div>
+    </ArticleWrapper>
   );
 }

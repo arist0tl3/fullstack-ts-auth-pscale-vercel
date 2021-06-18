@@ -1,12 +1,16 @@
 import { useMutation } from '@apollo/client';
-import { useState, FormEvent } from 'react';
+import { useState, FormEvent, ChangeEvent } from 'react';
 import { CreateCommentInput, Comment } from 'generated/generated/graphql';
 import PropTypes from 'prop-types';
 
 import ARTICLE from 'data/Query/Article';
 import CREATE_COMMENT from 'data/Mutation/CreateComment';
 
-import { Form, FormField, Container } from 'Components/_shared';
+import Button from '@material-ui/core/Button';
+import TextField from '@material-ui/core/TextField';
+import Typography from '@material-ui/core/Typography';
+
+import { Form, FormWrapper } from 'Components/_shared';
 
 const NewCommentPropTypes = {
   articleId: PropTypes.string.isRequired,
@@ -18,12 +22,15 @@ export default function NewComment({ articleId }: NewCommentProps) {
   const [createComment] = useMutation<{ createComment: Comment }, { input: CreateCommentInput }>(CREATE_COMMENT);
 
   const [content, setContent] = useState('');
+  const [contentError, setContentError] = useState('');
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
 
-    // eslint-disable-next-line no-alert
-    if (!content) return window.alert('Please enter a comment!');
+    if (!content) {
+      setContentError('Some content is required');
+      return;
+    }
 
     createComment({
       refetchQueries: [
@@ -40,22 +47,35 @@ export default function NewComment({ articleId }: NewCommentProps) {
     });
 
     setContent(() => '');
+  };
 
-    return false;
+  const handleContentChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setContentError('');
+    setContent(e.target.value);
   };
 
   return (
-    <Container>
-      <Form onSubmit={handleSubmit}>
-        <FormField>
-          <label htmlFor={'content'}>{'Content'}</label>
-          <textarea id={'content'} value={content} onChange={(e) => setContent(e.currentTarget.value)} />
-        </FormField>
-        <button type={'submit'} onClick={handleSubmit}>
+    <>
+      <Typography variant={'h6'}>{'Leave a comment'}</Typography>
+      <FormWrapper>
+        <Form onSubmit={handleSubmit}>
+        <TextField
+          id={'content'}
+          error={!!contentError}
+          helperText={contentError}
+          label={'Your Comment'}
+          multiline
+          onChange={handleContentChange}
+          required
+          rows={1}
+          value={content}
+        />
+        <Button variant={'contained'} color={'primary'} type={'submit'} onClick={handleSubmit}>
           {'Submit'}
-        </button>
-      </Form>
-    </Container>
+        </Button>
+        </Form>
+      </FormWrapper>
+    </>
   );
 }
 

@@ -22,7 +22,7 @@ export const FormWrapper = styled.div`
 
 export const Form = styled.form`
   width: 100%;
-  max-width: 480px;
+  max-width: 600px;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
