@@ -1,12 +1,10 @@
+import { Context as ApolloContext } from 'apollo-server-core';
+import { IncomingHttpHeaders } from 'http';
 import { User } from 'generated/graphql';
 import Knex from 'knex';
-import { Model } from 'objection';
 
-interface Article extends Model {
-}
-
-export interface Context {
+export interface Context extends ApolloContext {
   currentUser?: User
+  headers: IncomingHttpHeaders
   knex: Knex
-  Article: Article
 }

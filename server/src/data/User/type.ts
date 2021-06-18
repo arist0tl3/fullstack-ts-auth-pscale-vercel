@@ -12,8 +12,15 @@ const user = gql`
     password: String!
   }
 
+  input LoginInput {
+    email: String!
+    password: String!
+  }
+
   extend type Mutation {
     createUser(input: CreateUserInput!): User
+    login(input: LoginInput!): User
+    logout: User
   }
 `;
 
