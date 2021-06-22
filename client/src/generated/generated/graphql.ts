@@ -248,7 +248,7 @@ export type Mutation = {
   createComment?: Maybe<Comment>;
   createUser?: Maybe<User>;
   login?: Maybe<User>;
-  logout?: Maybe<User>;
+  logout?: Maybe<Scalars['Boolean']>;
 };
 
 
@@ -454,6 +454,7 @@ export type ResolversTypes = {
   Longitude: ResolverTypeWrapper<Scalars['Longitude']>;
   MAC: ResolverTypeWrapper<Scalars['MAC']>;
   Mutation: ResolverTypeWrapper<{}>;
+  Boolean: ResolverTypeWrapper<Scalars['Boolean']>;
   NegativeFloat: ResolverTypeWrapper<Scalars['NegativeFloat']>;
   NegativeInt: ResolverTypeWrapper<Scalars['NegativeInt']>;
   NonEmptyString: ResolverTypeWrapper<Scalars['NonEmptyString']>;
@@ -481,7 +482,6 @@ export type ResolversTypes = {
   UnsignedInt: ResolverTypeWrapper<Scalars['UnsignedInt']>;
   User: ResolverTypeWrapper<User>;
   UserToken: ResolverTypeWrapper<UserToken>;
-  Boolean: ResolverTypeWrapper<Scalars['Boolean']>;
   UtcOffset: ResolverTypeWrapper<Scalars['UtcOffset']>;
   Void: ResolverTypeWrapper<Scalars['Void']>;
 };
@@ -526,6 +526,7 @@ export type ResolversParentTypes = {
   Longitude: Scalars['Longitude'];
   MAC: Scalars['MAC'];
   Mutation: {};
+  Boolean: Scalars['Boolean'];
   NegativeFloat: Scalars['NegativeFloat'];
   NegativeInt: Scalars['NegativeInt'];
   NonEmptyString: Scalars['NonEmptyString'];
@@ -552,7 +553,6 @@ export type ResolversParentTypes = {
   UnsignedInt: Scalars['UnsignedInt'];
   User: User;
   UserToken: UserToken;
-  Boolean: Scalars['Boolean'];
   UtcOffset: Scalars['UtcOffset'];
   Void: Scalars['Void'];
 };
@@ -700,7 +700,7 @@ export type MutationResolvers<ContextType = any, ParentType extends ResolversPar
   createComment?: Resolver<Maybe<ResolversTypes['Comment']>, ParentType, ContextType, RequireFields<MutationCreateCommentArgs, 'input'>>;
   createUser?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType, RequireFields<MutationCreateUserArgs, 'input'>>;
   login?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType, RequireFields<MutationLoginArgs, 'input'>>;
-  logout?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType>;
+  logout?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
 };
 
 export interface NegativeFloatScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['NegativeFloat'], any> {
