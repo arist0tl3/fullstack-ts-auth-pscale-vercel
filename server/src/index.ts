@@ -9,8 +9,8 @@ import { Model } from 'objection';
 
 import schema from 'data/schema';
 
-import getUser from './utils/getUser';
-import stripBearerFromAuthHeader from './utils/stripBearerFromAuthHeader';
+import getUser from 'utils/getUser';
+import stripBearerFromAuthHeader from 'utils/stripBearerFromAuthHeader';
 
 const { DATABASE_URL, DEBUG = false } = process.env;
 

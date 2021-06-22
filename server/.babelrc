@@ -9,7 +9,8 @@
         "data": "./src/data",
         "generated": "./src/generated",
         "models": "./src/models",
-        "types": "./src/types"
+        "types": "./src/types",
+        "utils": "./src/utils",
       },
       "extensions": [".js", ".ts"]
     }]
