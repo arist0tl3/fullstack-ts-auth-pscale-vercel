@@ -1,16 +1,48 @@
-import { MutationLoginArgs, User } from 'generated/graphql';
 import { Context } from 'types/context';
-
-import { v4 as uuidv4 } from 'uuid';
-import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 
-import { GraphQLResolveInfo } from 'graphql';
+import stripBearerFromAuthHeader from 'utils/stripBearerFromAuthHeader';
 
-import resolveGraph from 'models/resolveGraph';
-import UserModel from 'models/User';
 import UserTokenModel from 'models/UserToken';
 
-const logout = async (root: object, args: MutationLoginArgs, ctx: Context, info: GraphQLResolveInfo): Promise<User | null> => {
-  ctx.headers.authorization
-};
+const { JWT_SECRET = 'jwtSecret' } = process.env;
+
+export default async function logout(root: object, args: any, ctx: Context): Promise<boolean> {
+  const authHeader = ctx.headers?.authorization || '';
+  const token = stripBearerFromAuthHeader(authHeader);
+
+  const { ok, result } = await new Promise((resolve) => {
+    jwt.verify(token, JWT_SECRET, (err, verifyResult) => {
+      if (err) {
+        resolve({
+          ok: false,
+          result: err,
+        });
+      } else {
+        resolve({
+          ok: true,
+          result: verifyResult,
+        });
+      }
+    });
+  });
+
+  if (!ok) return false;
+
+  const tokenId = result;
+
+  const userToken = await UserTokenModel.query().findById(tokenId);
+
+  if (!userToken || !userToken.id) return false;
+
+  // Revoke the current token
+  await UserTokenModel.query()
+    .patch({
+      revoked: true,
+      revokedAt: new Date(),
+      revokedReason: 'logout',
+    })
+    .findById(tokenId);
+
+  return true;
+}

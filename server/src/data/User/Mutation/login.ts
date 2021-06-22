@@ -1,17 +1,13 @@
-import { MutationLoginUserArgs, User } from 'generated/graphql';
-import { Context } from 'types/context';
+import { MutationLoginArgs, User } from 'generated/graphql';
 
 import { v4 as uuidv4 } from 'uuid';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 
-import { GraphQLResolveInfo } from 'graphql';
-
-import resolveGraph from 'models/resolveGraph';
 import UserModel from 'models/User';
 import UserTokenModel from 'models/UserToken';
 
-const login = async (root: object, args: MutationLoginUserArgs, ctx: Context, info: GraphQLResolveInfo): Promise<User | null> => {
+const login = async (root: object, args: MutationLoginArgs): Promise<User | null> => {
   // Retrieve input
   const { email, password } = args.input;
 
@@ -32,8 +28,7 @@ const login = async (root: object, args: MutationLoginUserArgs, ctx: Context, in
     userId: user.id,
   });
 
-  // Return as a graph to automatically resolve any fields
-  const userAsGraph = resolveGraph(ctx, info, UserModel.query().findById(user.id));
+  const { user: userAsGraph } = await UserTokenModel.query().findById(tokenId).withGraphFetched('user');
 
   return {
     ...userAsGraph,

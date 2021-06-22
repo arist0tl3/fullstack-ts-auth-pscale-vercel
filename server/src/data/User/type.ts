@@ -20,7 +20,7 @@ const user = gql`
   extend type Mutation {
     createUser(input: CreateUserInput!): User
     login(input: LoginInput!): User
-    logout: User
+    logout: Boolean
   }
 `;
 

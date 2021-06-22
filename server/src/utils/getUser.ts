@@ -2,13 +2,15 @@ import { User } from 'generated/graphql';
 import jwt from 'jsonwebtoken';
 import UserTokenModel from 'models/UserToken';
 
+const { JWT_SECRET = 'jwtSecret' } = process.env;
+
 export default async function getUser(token: string): Promise<User | undefined> {
   if (!token) {
     return undefined;
   }
 
   const { ok, result } = await new Promise((resolve) => {
-    jwt.verify(token, 'mySecret', (err: any, verifyResult: any) => {
+    jwt.verify(token, JWT_SECRET, (err: any, verifyResult: any) => {
       if (err) {
         resolve({
           ok: false,
